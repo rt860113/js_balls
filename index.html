@@ -1,6 +1,7 @@
 <html>
 <head>
 	<title>Javascript Box - OOP demo</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 </head>
 <body>
 	<style type="text/css">
@@ -55,7 +56,6 @@
 		}
 
 		this.update = function(time){
-			console.log(html_id);
 			var el = document.getElementById(html_id);
 
 			//see if the circle is going outside the browser. if it is, reverse the velocity
@@ -98,50 +98,49 @@
 			for(circle in circles)
 			{
 				circles[circle].update(1);
-				// console.log(circles);
 			}
-		}
-		this.increase=function(){
-			for(circle in circles)
-			{
-				circles[circle].increaseRadius();
-				// console.log(circles);
-			}
-		}
-		this.collision=function(){
 			for (var i = 0; i < circles.length; i++) 
 			{
 				for (var j = 0; j < circles.length; j++) {
-					if (i!=j) 
+					if (i!=j&&circles[i]!==undefined&&circles[j]!==undefined) 
 					{
 
-						
-						// console.log("Diff  :  "+Math.sqrt(Math.pow(circles[i].info.cx-circles[j].info.cx,2)+Math.pow(circles[i].info.cy-circles[j].info.cy,2)));
-						// console.log("radius: "+(circles[i].info.r+circles[j].info.r));
 						if (Math.sqrt(Math.pow(circles[i].info.cx-circles[j].info.cx,2)+Math.pow(circles[i].info.cy-circles[j].info.cy,2))<circles[i].info.r+circles[j].info.r)
 						{
-							// console.log(i,j);
-							// console.log(document.getElementById("svg"));
-							// console.log(circles[i].info.id);
-							document.getElementById("svg").removeChild(document.getElementById(circles[i].info.id));
-							document.getElementById("svg").removeChild(document.getElementById(circles[j].info.id));
-							// alert('y-circles');
+							
+							tempi="#"+circles[i].info.id;
+							tempj="#"+circles[j].info.id;
+							$(tempi).hide("slow",function(){
+								$(this).remove();
+							});
+							$(tempj).hide("slow",function(){
+								$(this).remove();
+							});
+							delete circles[i];
+							delete circles[j];
 						};
 					};
 				};
 			};
 		}
+		this.increase=function(){
+			for(circle in circles)
+			{
+				circles[circle].increaseRadius();
+			}
+		}
+		this.collision=function(){
+			
+		}
 		this.createNewCircle = function(x,y,r){
 			var new_circle = new Circle(x,y,r,counter++);
 			circles.push(new_circle);
-			// console.log('created a new circle!', new_circle);
 		}
 		this.resetCircle=function()
 		{
 			for(circle in circles)
 			{
 				circles[circle].resetRadius();
-				// console.log(circles[circle]);
 			}
 		}
 		//create one circle when the game starts
@@ -152,7 +151,7 @@
 
 	var playground = new PlayGround();
 	newloop=setInterval(playground.loop, 15);
-	newloop1=setInterval(playground.collision,15);
+	// newloop1=setInterval(playground.collision,15);
 
 	// document.onclick = function(e) {
 	// 	playground.createNewCircle(e.x,e.y,10);
