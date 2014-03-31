@@ -54,7 +54,6 @@
 			this.info.r=10;
 			el.setAttribute("r",this.info.r);
 		}
-
 		this.update = function(time){
 			var el = document.getElementById(html_id);
 
@@ -107,16 +106,25 @@
 
 						if (Math.sqrt(Math.pow(circles[i].info.cx-circles[j].info.cx,2)+Math.pow(circles[i].info.cy-circles[j].info.cy,2))<circles[i].info.r+circles[j].info.r)
 						{
-							
-							tempi="#"+circles[i].info.id;
-							tempj="#"+circles[j].info.id;
-							$(tempi).hide("slow",function(){
+							var eli=document.getElementById(circles[i].info.id);
+							var temp=circles[i].info.r+circles[j].info.r;
+							var tempi="#"+circles[i].info.id;
+							var tempj="#"+circles[j].info.id;
+							if (circles[i].info.cy+temp>document.body.clientHeight||circles[i].info.cy<temp||circles[i].info.cx>document.body.clientWidth-22-temp || circles[i].info.cx < temp) 
+							{
+								$(tempi).hide("slow",function(){
+								$(this).remove();
+								});
+								delete circles[i];
+							}
+							else
+							{
+								circles[i].info.r=circles[i].info.r+circles[j].info.r;
+								eli.setAttribute("r",circles[i].info.r);
+							};
+								$(tempj).hide("slow",function(){
 								$(this).remove();
 							});
-							$(tempj).hide("slow",function(){
-								$(this).remove();
-							});
-							delete circles[i];
 							delete circles[j];
 						};
 					};
